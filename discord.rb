@@ -20,38 +20,36 @@ bot = Discordrb::Commands::CommandBot.new token: TOKEN, client_id: CLIENT_ID, pr
 
 voice_status = Hash.new
 user_info = Hash.new
-bot.ready do |event|
-    bot.servers.each_value do |srv|
-        #ボイスチャンネルの{id => name}のhashを作成
-        srv.voice_channels.each do |channel|
-            voice_status[channel.name] = []
-        end
-        #ユーザーの{id => name}のhashを作成
-        srv.users.each do |user|
-            user_info[user.id] = user.name
-        end
-    #サーバからボイスチャンネルにいるユーザーを取得
-        active_users = []
-        pp srv.voice_states
-        srv.voice_states.each do |user_id, status|
-        #アクティブなチャンネルの名前を取得
-            active_channel_name = status.voice_channel.name
-        #アクティブユーザーの名前を取得
-            #active_users.push(user_info[user_id])
-            voice_status[active_channel_name].push(user_info[user_id])
-        end
-        pp voice_status
-    end
+#bot.disconnected do |event|
 
+#    client.chat_postMessage(channel: '#discord_state', text: "test")
+#end
+
+bot.run(async=true)
+
+bot.servers.each_value do |srv|
+    #ボイスチャンネルの{id => name}のhashを作成
+    srv.voice_channels.each do |channel|
+        voice_status[channel.name] = []
+    end
+    #ユーザーの{id => name}のhashを作成
+    srv.users.each do |user|
+        user_info[user.id] = user.name
+    end
+#サーバからボイスチャンネルにいるユーザーを取得
+    active_users = []
+    pp srv.voice_states
+    srv.voice_states.each do |user_id, status|
+    #アクティブなチャンネルの名前を取得
+        active_channel_name = status.voice_channel.name
+    #アクティブユーザーの名前を取得
+        #active_users.push(user_info[user_id])
+        voice_status[active_channel_name].push(user_info[user_id])
+    end
+    pp voice_status
     voice_status.each do |channel, users|
         if !(users == []) then
             client.chat_postMessage(channel: '#discord_state', text: "Now #{users.join(', ')} in ##{channel}")
         end
     end
 end
-
-bot.run
-client.start!
-
-bot.stop
-client.close!

@@ -52,7 +52,7 @@ bot.voice_state_update do |event|
             client.chat_postMessage(channel: '#discord_state', text: "Now #{value} in ##{key}")
             }
         if voice_channel_status.key?(channel_name) then
-            voice_channel_status[channel_name] = voice_channel_status[:channel_name] + ' ,' + user
+            voice_channel_status[channel_name] = voice_channel_status[channel_name] + ' ,' + user
         else
             voice_channel_status[channel_name] = user
         end
