@@ -2,6 +2,12 @@
 
 source "https://rubygems.org"
 
-git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
+gem 'slack-ruby-client'
+gem 'discordrb'
+gem "pp"
+gem 'open-uri'
+gem 'rubygems'
+gem 'rmagick'
+gem 'gyazo'
 
 # gem "rails"
