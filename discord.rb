@@ -52,3 +52,6 @@ end
 
 bot.run
 client.start!
+
+bot.stop
+client.close!
