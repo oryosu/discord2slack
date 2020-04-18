@@ -1,4 +1,7 @@
-#!/bin/sh
+!/bin/sh
 
-ruby discord.rb
-exit
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+cd ~/projects/discord2slack
+ruby discord2slack.rb
