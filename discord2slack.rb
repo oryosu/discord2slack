@@ -8,7 +8,7 @@ require 'gyazo'
 require 'aws-sdk'
 
 # discord bot info
-TOKEN = "NzAwMjg4OTgwNzk2ODMzODIz.XpgzkQ.lm9TilYh3CI7nHHGpLcPt3akgN8"
+TOKEN = "NzAwMjg4OTgwNzk2ODMzODIz.XpvyBQ.MlQghJZjtWvYRMlYTrC0AgLRL4k"
 CLIENT_ID = 700288980796833823
 
 # slack bot info
