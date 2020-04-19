@@ -13,7 +13,7 @@ CLIENT_ID = 700288980796833823
 
 # slack bot info
 Slack.configure do |conf|
-    conf.token = 'xoxb-136542423521-1090684378256-o3awytx92JKfN1MPRhoDXpdI'
+    conf.token = 'xoxb-136542423521-1090684378256-DRzPcWbtJqB26skpOCnh6Vxi'
 end
 
 # slack client
