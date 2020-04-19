@@ -6,6 +6,7 @@ require 'rubygems'
 require 'rmagick'
 require 'gyazo'
 require 'aws-sdk'
+require 'date'
 
 # discord bot info
 TOKEN = "NzAwMjg4OTgwNzk2ODMzODIz.XpvyBQ.MlQghJZjtWvYRMlYTrC0AgLRL4k"
@@ -89,11 +90,18 @@ bot.servers.each_value do |srv|
             pp bg
             bg = Magick::Image.read(bg.key).first
             bg.composite!(avatars, Magick::SouthWestGravity, Magick::OverCompositeOp)
+            t = Time.new
+            timestamp = t.strftime("%Y%m%d%H%M%S")
+            draw = Magick::Draw.new  
+            draw.font = 'Verdana-Bold'
+            draw.pointsize = 5
+            draw.gravity = Magick::CenterGravity
+            draw.annotate(bg, 16, 16, 1250, 0, timestamp)
+            pp timestamp
             bg.write("notification/#{channel}.jpg")
             #notification_img = bucket.object("notification/#{channel}.jpg")
             res = gyazo.upload imagefile: "notification/#{channel}.jpg"
             pp res[:permalink_url]
-            gyazo.delete image_id: res[:image_id]
             client.chat_postMessage(channel: '#discord_observer_develop', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
         end
     end
