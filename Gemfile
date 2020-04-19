@@ -6,5 +6,6 @@ gem 'slack-ruby-client'
 gem 'discordrb'
 gem 'rmagick'
 gem 'gyazo'
+gem 'aws-sdk'
 
 # gem "rails"
