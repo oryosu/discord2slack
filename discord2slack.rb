@@ -93,7 +93,7 @@ bot.servers.each_value do |srv|
             #notification_img = bucket.object("notification/#{channel}.jpg")
             res = gyazo.upload imagefile: "notification/#{channel}.jpg"
             pp res[:permalink_url]
-            #client.chat_postMessage(channel: '#discord_state', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
+            client.chat_postMessage(channel: '#discord_state', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
         end
     end
 end
