@@ -30,7 +30,7 @@ gyazo = Gyazo::Client.new access_token: 'a23443064be80b54f95fb0e563d010c40e90a1f
 # s3 configuration
 Aws.config.update({
     region: 'us-west-2',
-    credentials: Aws::Credentials.new("AKIAJPLLSRQS2JPD2C4Q", "+czldk2qBd58SEUoj5maFnRH5o6jmg8pTJQCsHpO")})
+    credentials: Aws::Credentials.new("AKIAICPTXV2E5O7EKMCA", "J727JwtfvetP2nhJmXfSvW74EswqNSGElkefZU9E")})
 s3 = Aws::S3::Resource.new
 bucket = s3.bucket('discord2slack-for-dp9')
 
