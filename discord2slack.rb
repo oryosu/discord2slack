@@ -72,9 +72,10 @@ bot.servers.each_value do |srv|
     srv.voice_states.each do |user_id, status|
     #アクティブなチャンネルの名前を取得
         active_channel_name = status.voice_channel.name
+        if !(active_channel_name == "大事な話"):
     #アクティブユーザーの名前を取得
         #active_users.push(user_info[user_id])
-        voice_status[active_channel_name].push(user_info[user_id])
+            voice_status[active_channel_name].push(user_info[user_id])
     end
     pp voice_status
     voice_status.each do |channel, users|
