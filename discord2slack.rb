@@ -72,10 +72,11 @@ bot.servers.each_value do |srv|
     srv.voice_states.each do |user_id, status|
     #アクティブなチャンネルの名前を取得
         active_channel_name = status.voice_channel.name
-        if !(active_channel_name == "大事な話"):
+        if !(active_channel_name == "大事な話") then
     #アクティブユーザーの名前を取得
         #active_users.push(user_info[user_id])
             voice_status[active_channel_name].push(user_info[user_id])
+        end
     end
     pp voice_status
     voice_status.each do |channel, users|
@@ -103,8 +104,8 @@ bot.servers.each_value do |srv|
             #notification_img = bucket.object("notification/#{channel}.jpg")
             res = gyazo.upload imagefile: "notification/#{channel}.jpg"
             pp res[:permalink_url]
-            #client.chat_postMessage(channel: '#000_discord', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
-            client.chat_postMessage(channel: '#discord_observer_develop', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
+            client.chat_postMessage(channel: '#000_discord', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
+            #client.chat_postMessage(channel: '#discord_observer_develop', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
         end
     end
 end
