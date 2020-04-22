@@ -9,12 +9,12 @@ require 'aws-sdk'
 require 'date'
 
 # discord bot info
-TOKEN = "NzAwMjg4OTgwNzk2ODMzODIz.XpvyBQ.MlQghJZjtWvYRMlYTrC0AgLRL4k"
-CLIENT_ID = 700288980796833823
+TOKEN = ENV["DISCORD_BOT_TOKEN"]
+CLIENT_ID = ENV["DISCORD_BOT_CLIENT_ID"]
 
 # slack bot info
 Slack.configure do |conf|
-    conf.token = 'xoxb-136542423521-1090684378256-DRzPcWbtJqB26skpOCnh6Vxi'
+    conf.token = ENV["SLACK_BOT_TOKEN"]
 end
 
 # slack client
@@ -25,12 +25,12 @@ client.auth_test
 bot = Discordrb::Commands::CommandBot.new token: TOKEN, client_id: CLIENT_ID, prefix:'/'
 
 # gyazo bot
-gyazo = Gyazo::Client.new access_token: 'a23443064be80b54f95fb0e563d010c40e90a1f2fa6bc5aa963f2f6909473e01'
+gyazo = Gyazo::Client.new access_token: ENV["GYAZO_ACCESS_TOKEN"]
 
 # s3 configuration
 Aws.config.update({
     region: 'us-west-2',
-    credentials: Aws::Credentials.new("AKIAICPTXV2E5O7EKMCA", "J727JwtfvetP2nhJmXfSvW74EswqNSGElkefZU9E")})
+    credentials: Aws::Credentials.new(ENV["AWS_ACCESS_KEY"], ENV["AWS_SECRET_KEY"])})
 s3 = Aws::S3::Resource.new
 bucket = s3.bucket('discord2slack-for-dp9')
 
