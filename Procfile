@@ -1,1 +1,0 @@
-worker: bundle exec ruby discord2slack.rb -p $PORT
