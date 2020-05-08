@@ -29,10 +29,11 @@ gyazo = Gyazo::Client.new access_token: ENV["GYAZO_ACCESS_TOKEN"]
 
 # s3 configuration
 Aws.config.update({
-    region: 'us-west-2',
+    region: 'us-east-2',
     credentials: Aws::Credentials.new(ENV["AWS_ACCESS_KEY"], ENV["AWS_SECRET_KEY"])})
 s3 = Aws::S3::Resource.new
 bucket = s3.bucket('discord2slack-for-dp9')
+#pp bucket
 
 ###
 ### process part
@@ -84,11 +85,13 @@ bot.servers.each_value do |srv|
             imagelist = []
             users.each do |user|
                 avatar = bucket.object("avatar/#{user}.jpg")
+                avatar.download_file("avatar/#{user}.jpg")
                 imagelist.push(avatar.key)
             end
             avatars = Magick::ImageList.new(*imagelist)
             avatars = avatars.append(false)
             bg = bucket.object("bg/#{channel}.jpg")
+            bg.download_file("bg/#{channel}.jpg")
             pp bg
             bg = Magick::Image.read(bg.key).first
             bg.composite!(avatars, Magick::SouthWestGravity, Magick::OverCompositeOp)
@@ -104,8 +107,8 @@ bot.servers.each_value do |srv|
             #notification_img = bucket.object("notification/#{channel}.jpg")
             res = gyazo.upload imagefile: "notification/#{channel}.jpg"
             pp res[:permalink_url]
-            client.chat_postMessage(channel: '#000_discord', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
-            #client.chat_postMessage(channel: '#discord_observer_develop', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
+            #client.chat_postMessage(channel: '#000_discord', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
+            client.chat_postMessage(channel: '#discord_observer_develop', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
         end
     end
 end
