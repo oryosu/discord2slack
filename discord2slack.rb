@@ -103,7 +103,7 @@ bot.servers.each_value do |srv|
             draw.gravity = Magick::CenterGravity
             draw.annotate(bg, 16, 16, 1250, 0, timestamp)
             pp timestamp
-            bg.write("notification/#{channel}.jpg")
+            bg.write("#{channel}.jpg")
             #notification_img = bucket.object("notification/#{channel}.jpg")
             res = gyazo.upload imagefile: "notification/#{channel}.jpg"
             pp res[:permalink_url]
