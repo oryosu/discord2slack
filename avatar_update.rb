@@ -27,7 +27,7 @@ bot.servers.each_value do |srv|
                 file.puts img.read
             end
         end
-        orig = Magick::Image.read("/app/orig/#{user.name}.jpg").first
+        orig = Magick::Image.read("/app/orig/#{user.name}.jpg")
         # 新しいサイズへ変更
         resize = orig.resize_to_fit(128,128)
         # 新画像保存
