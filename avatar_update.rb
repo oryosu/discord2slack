@@ -20,7 +20,7 @@ bot.run(async=true)
 bot.servers.each_value do |srv|
     srv.users.each do |user|
         pp user.avatar_url
-        File.open("orig/#{user.name}.jpg", "wb") do |file|
+        File.open("tmp/#{user.name}.jpg", "wb") do |file|
             open(user.avatar_url) do |img|
                 file.puts img.read
             end
