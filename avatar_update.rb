@@ -25,7 +25,7 @@ bot.servers.each_value do |srv|
         open(user.avatar_url) do |img|
             obj.put(body: img)
         end
-        orig = bucket.object("orig/#{channel}.jpg")
+        orig = bucket.object("orig/#{user.name}.jpg")
         img = Magick::Image.read(orig.key).first
         # 新しいサイズへ変更
         img = img.resize_to_fit(128,128)
