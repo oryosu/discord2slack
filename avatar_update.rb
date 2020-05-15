@@ -22,7 +22,7 @@ bot.servers.each_value do |srv|
     srv.users.each do |user|
         pp user.avatar_url
         obj = s3.bucket('discord2slack-for-dp9').object("orig/#{user.name}.jpg")
-        open(user.avatar_url) do |img|
+        URI.open(user.avatar_url) do |img|
             obj.put(body: img)
         end
         orig = bucket.object("orig/#{user.name}.jpg")
