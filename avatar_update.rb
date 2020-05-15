@@ -26,6 +26,7 @@ bot.servers.each_value do |srv|
             obj.put(body: img)
         end
         orig = bucket.object("orig/#{user.name}.jpg")
+        orig.download_file("orig/#{user.name}.jpg")
         img = Magick::Image.read(orig.key).first
         # 新しいサイズへ変更
         img = img.resize_to_fit(128,128)
