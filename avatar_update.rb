@@ -5,9 +5,9 @@ require 'aws-sdk'
 
 # discord bot info
 TOKEN = ENV["DISCORD_BOT_TOKEN"]
-CLIENT_ID = ENV["DISCORD_BOT_CLIENT_ID"]
+CLIENT_name = ENV["DISCORD_BOT_CLIENT_name"]
 # discord bot
-bot = Discordrb::Commands::CommandBot.new token: TOKEN, client_id: CLIENT_ID, prefix:'/'
+bot = Discordrb::Commands::CommandBot.new token: TOKEN, client_name: CLIENT_name, prefix:'/'
 
 # s3 configuration
 Aws.config.update({
@@ -27,11 +27,12 @@ bot.servers.each_value do |srv|
         end
         orig = bucket.object("orig/#{user.name}.jpg")
         orig.download_file("orig/#{user.name}.jpg")
-        img = Magick::Image.read(orig.key).first
+        pp orig.key
+        orig = Magick::Image.read(orig.key).first
         # 新しいサイズへ変更
-        img = img.resize_to_fit(128,128)
+        resize = orig.resize_to_fit(128,128)
         # 新画像保存
-        img.write("avatar/#{user.name}.jpg")
+        resize.write("avatar/#{user.name}.jpg")
         # s3へupload
         obj = s3.bucket('discord2slack-for-dp9').object("avatar/#{user.name}.jpg")
         obj.upload_file("avatar/#{user.name}.jpg")
