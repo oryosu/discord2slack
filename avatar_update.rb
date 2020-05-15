@@ -25,8 +25,8 @@ bot.servers.each_value do |srv|
             obj.put(body: img)
         end
         obj = s3.bucket('discord2slack-for-dp9').object("orig/#{user.name}.jpg")
-        obj.get(response_target: "tmp/#{user.name}.jpg")
-        img = Magick::ImageList.new("tmp/#{user.name}.jpg")
+        obj.get(response_target: "orig/#{user.name}.jpg")
+        img = Magick::ImageList.new("orig/#{user.name}.jpg")
         # 新しいサイズへ変更
         img = img.resize_to_fit(128,128)
         # 新画像保存
