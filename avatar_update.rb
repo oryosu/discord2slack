@@ -29,7 +29,6 @@ bot.servers.each_value do |srv|
         #    end
         #end
         image = Magick::ImageList.new
-        image.format = 'webp'
         image.from_blob(urlimg.read)
         # 新しいサイズへ変更
         resize = image.resize_to_fit(128,128)
