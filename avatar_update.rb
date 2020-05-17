@@ -21,15 +21,17 @@ bot.run(async=true)
 bot.servers.each_value do |srv|
     srv.users.each do |user|
         pp user.avatar_url
-        obj = s3.bucket('discord2slack-for-dp9').object("orig/#{user.name}.jpg")
-        File.open("./tmp/#{user.name}.jpg", "wb") do |file|
-            URI.open("#{user.avatar_url}") do |img|
-                file.puts img.read
-            end
-        end
-        orig = Magick::ImageList.new("./tmp/#{user.name}.jpg")
+        #obj = s3.bucket('discord2slack-for-dp9').object("orig/#{user.name}.jpg")
+        #File.open("./tmp/#{user.name}.jpg", "wb") do |file|
+        urlimg = URI.open("#{user.avatar_url}")
+        #URI.open("#{user.avatar_url}") do |img|
+        #        file.puts img.read
+        #    end
+        #end
+        image = Magick::ImageList.new
+        image.from_blob(urlimg.read)
         # 新しいサイズへ変更
-        resize = orig.resize_to_fit(128,128)
+        resize = image.resize_to_fit(128,128)
         # 新画像保存
         resize.write("avatar/#{user.name}.jpg")
         # s3へupload
