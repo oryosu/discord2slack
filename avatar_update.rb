@@ -23,7 +23,7 @@ bot.servers.each_value do |srv|
         pp user.avatar_url
         #obj = s3.bucket('discord2slack-for-dp9').object("orig/#{user.name}.jpg")
         #File.open("./tmp/#{user.name}.jpg", "wb") do |file|
-        urlimg = URI.open("#{user.avatar_url}")
+        urlimg = URI.open("#{user.avatar_url(format='jpg')}")
         #URI.open("#{user.avatar_url}") do |img|
         #        file.puts img.read
         #    end
