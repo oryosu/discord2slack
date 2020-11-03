@@ -53,8 +53,8 @@ bot.servers.each_value do |srv|
         voice_status[channel.name] = []
     end
     #ユーザーの{id => name}のhashを作成
-    srv.users.each do |user|
-        user_info[user.id] = user.name
+    #srv.users.each do |user|
+    #    user_info[user.id] = user.name
         #File.open("orig/#{user.name}.jpg", "wb") do |file|
         #    open("#{user.avatar_url}") do |img|
         #        file.puts img.read
@@ -65,7 +65,7 @@ bot.servers.each_value do |srv|
         #img = img.resize_to_fit(128,128)
         # 新画像保存
         #img.write("avatar/#{user.name}.jpg")
-        end
+    #    end
     
 #サーバからボイスチャンネルにいるユーザーを取得
     active_users = []
@@ -76,7 +76,8 @@ bot.servers.each_value do |srv|
         if !(active_channel_name == "大事な話(slack通知なし)") then
     #アクティブユーザーの名前を取得
         #active_users.push(user_info[user_id])
-            voice_status[active_channel_name].push(user_info[user_id])
+        #    pp bot.user(user_id).username
+            voice_status[active_channel_name].push(bot.user(user_id).username)
         end
     end
     pp voice_status

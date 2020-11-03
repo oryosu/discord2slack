@@ -19,11 +19,11 @@ bucket = s3.bucket('discord2slack-for-dp9')
 bot.run(async=true)
 
 bot.servers.each_value do |srv|
-    srv.users.each do |user|
-        pp user.avatar_url
+    srv.voice_states.each do |user_id, status|
+        pp bot.user(user_id).avatar_url
         #obj = s3.bucket('discord2slack-for-dp9').object("orig/#{user.name}.jpg")
         #File.open("./tmp/#{user.name}.jpg", "wb") do |file|
-        urlimg = URI.open("#{user.avatar_url(format='jpg')}")
+        urlimg = URI.open("#{bot.user(user_id).avatar_url(format='jpg')}")
         #URI.open("#{user.avatar_url}") do |img|
         #        file.puts img.read
         #    end
@@ -33,9 +33,9 @@ bot.servers.each_value do |srv|
         # 新しいサイズへ変更
         resize = image.resize_to_fit(128,128)
         # 新画像保存
-        resize.write("avatar/#{user.name}.jpg")
+        resize.write("avatar/#{bot.user(user_id).name}.jpg")
         # s3へupload
-        obj = s3.bucket('discord2slack-for-dp9').object("avatar/#{user.name}.jpg")
-        obj.upload_file("avatar/#{user.name}.jpg")
+        obj = s3.bucket('discord2slack-for-dp9').object("avatar/#{bot.user(user_id).name}.jpg")
+        obj.upload_file("avatar/#{bot.user(user_id).name}.jpg")
     end
 end
