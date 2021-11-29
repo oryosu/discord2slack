@@ -17,6 +17,12 @@ Slack.configure do |conf|
     conf.token = ENV["SLACK_BLK_BOT_TOKEN"]
 end
 
+# channels which have bg
+channel_with_bg = ["cypher", "General", "girls talk", "sub", "おやすみ", "身体1", "走るよ", "多目3"]
+
+# channels without notification
+no_notify = ["大事な話(slack通知なし)"]
+
 # slack client
 client = Slack::Web::Client.new
 client.auth_test
@@ -66,49 +72,53 @@ bot.servers.each_value do |srv|
         # 新画像保存
         #img.write("avatar/#{user.name}.jpg")
     #    end
-    
+
 #サーバからボイスチャンネルにいるユーザーを取得
     active_users = []
     pp srv.voice_states
     srv.voice_states.each do |user_id, status|
     #アクティブなチャンネルの名前を取得
         active_channel_name = status.voice_channel.name
-        if !(active_channel_name == "大事な話(slack通知なし)") then
+        if !(no_notify.include?(active_channel_name)) then
     #アクティブユーザーの名前を取得
         #active_users.push(user_info[user_id])
-        voice_status[active_channel_name].push(bot.user(user_id).username)
+            voice_status[active_channel_name].push(bot.user(user_id).username)
         end
     end
     pp voice_status
     voice_status.each do |channel, users|
         if !(users == []) then
-            imagelist = []
-            users.each do |user|
-                avatar = bucket.object("avatar/#{user}.jpg")
-                avatar.download_file("avatar/#{user}.jpg")
-                imagelist.push(avatar.key)
+            if channel_with_bg.include?(channel) then
+                imagelist = []
+                users.each do |user|
+                    avatar = bucket.object("avatar/#{user}.jpg")
+                    avatar.download_file("avatar/#{user}.jpg")
+                    imagelist.push(avatar.key)
+                end
+                avatars = Magick::ImageList.new(*imagelist)
+                avatars = avatars.append(false)
+                bg = bucket.object("bg/#{channel}.jpg")
+                bg.download_file("bg/#{channel}.jpg")
+                pp bg
+                bg = Magick::Image.read(bg.key).first
+                bg.composite!(avatars, Magick::SouthWestGravity, Magick::OverCompositeOp)
+                t = Time.new
+                timestamp = t.strftime("%Y%m%d%H%M%S")
+                draw = Magick::Draw.new
+                draw.font = 'Verdana-Bold'
+                draw.pointsize = 5
+                draw.gravity = Magick::CenterGravity
+                draw.annotate(bg, 16, 16, 1250, 0, timestamp)
+                pp timestamp
+                bg.write("#{channel}.jpg")
+                #notification_img = bucket.object("notification/#{channel}.jpg")
+                res = gyazo.upload imagefile: "#{channel}.jpg"
+                pp res[:permalink_url]
+                client.chat_postMessage(channel: '#000_discord', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
+                #client.chat_postMessage(channel: '#discord_observer_develop', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
+            else
+                client.chat_postMessage(channel: '#000_discord', text: "Now #{users.join(', ')} in ##{channel}")
             end
-            avatars = Magick::ImageList.new(*imagelist)
-            avatars = avatars.append(false)
-            bg = bucket.object("bg/#{channel}.jpg")
-            bg.download_file("bg/#{channel}.jpg")
-            pp bg
-            bg = Magick::Image.read(bg.key).first
-            bg.composite!(avatars, Magick::SouthWestGravity, Magick::OverCompositeOp)
-            t = Time.new
-            timestamp = t.strftime("%Y%m%d%H%M%S")
-            draw = Magick::Draw.new  
-            draw.font = 'Verdana-Bold'
-            draw.pointsize = 5
-            draw.gravity = Magick::CenterGravity
-            draw.annotate(bg, 16, 16, 1250, 0, timestamp)
-            pp timestamp
-            bg.write("#{channel}.jpg")
-            #notification_img = bucket.object("notification/#{channel}.jpg")
-            res = gyazo.upload imagefile: "#{channel}.jpg"
-            pp res[:permalink_url]
-            client.chat_postMessage(channel: '#000_discord', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
-            #client.chat_postMessage(channel: '#discord_observer_develop', text: "Now #{users.join(', ')} in ##{channel}\n#{res[:permalink_url]}")
         end
     end
 end
