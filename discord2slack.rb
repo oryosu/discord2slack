@@ -17,6 +17,12 @@ Slack.configure do |conf|
     conf.token = ENV["SLACK_BOT_TOKEN"]
 end
 
+# channels which have bg
+channel_with_bg = ["cypher", "General", "girls talk", "sub", "おやすみ", "身体1", "走るよ", "多目3"]
+
+# channels without notification
+no_notify = ["大事な話(slack通知なし)"]
+
 # slack client
 client = Slack::Web::Client.new
 client.auth_test
@@ -73,7 +79,7 @@ bot.servers.each_value do |srv|
     srv.voice_states.each do |user_id, status|
     #アクティブなチャンネルの名前を取得
         active_channel_name = status.voice_channel.name
-        if !(active_channel_name == "大事な話(slack通知なし)") then
+        if !(no_notify.include?(active_channel_name)) then
     #アクティブユーザーの名前を取得
         #active_users.push(user_info[user_id])
         #    pp bot.user(user_id).username
@@ -98,7 +104,7 @@ bot.servers.each_value do |srv|
             bg.composite!(avatars, Magick::SouthWestGravity, Magick::OverCompositeOp)
             t = Time.new
             timestamp = t.strftime("%Y%m%d%H%M%S")
-            draw = Magick::Draw.new  
+            draw = Magick::Draw.new
             draw.font = 'Verdana-Bold'
             draw.pointsize = 5
             draw.gravity = Magick::CenterGravity
